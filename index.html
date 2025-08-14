@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Redirecting...</title>
-  
+
   <!-- Google Analytics 4 -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
   <script>
@@ -12,24 +12,33 @@
     gtag('js', new Date());
     gtag('config', 'G-XXXXXXXXXX');
 
-    const targetUrl = "https://www.youtube.com/watch?v=pnXOrPvJtzA";
+    const youtubeAppUrl = "youtube://pnXOrPvJtzA";  // YouTube app scheme
+    const youtubeWebUrl = "https://www.youtube.com/watch?v=pnXOrPvJtzA"; // Web fallback
 
-    // Send QR scan event, then redirect
-    gtag('event', 'qr_scan', {
+    // Track QR scan event first
+    gtag('event', 'seal_QR_code', {
       'event_category': 'QR Code',
       'event_label': window.location.href,
       'event_callback': () => {
-        window.location.replace(targetUrl);
+        // Attempt to open YouTube app first
+        window.location.replace(youtubeAppUrl);
+
+        // Fallback to web after short delay if app fails
+        setTimeout(() => { window.location.replace(youtubeWebUrl); }, 500);
       }
     });
 
-    // Fallback redirect in case GA takes too long
-    setTimeout(() => { window.location.replace(targetUrl); }, 300);
+    // Safety fallback if GA4 takes too long
+    setTimeout(() => { window.location.replace(youtubeWebUrl); }, 800);
   </script>
 </head>
 <body>
-  <p style="text-align:center; font-size:200%;">Redirecting... If you are not redirected, 
+  <p>Redirecting... If you are not redirected, 
   <a href="https://www.youtube.com/watch?v=pnXOrPvJtzA">click here</a>.</p>
 </body>
 </html>
-<!-- Google Analytics Account Tracking Number: G-XBRDW0JKLC --!>
+
+<!-- 
+Google Analytics Account Tracking Number: G-XBRDW0JKLC 
+<p style="text-align:center; font-size:200%;">
+--!>
