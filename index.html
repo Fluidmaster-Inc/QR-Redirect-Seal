@@ -3,7 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <title>Redirecting...</title>
-  <meta http-equiv="refresh" content="0.5; url=https://www.youtube.com/watch?v=pnXOrPvJtzA">
+  
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XXXXXXXXXX');
+
+    const targetUrl = "https://www.youtube.com/watch?v=pnXOrPvJtzA";
+
+    // Send QR scan event, then redirect
+    gtag('event', 'qr_scan', {
+      'event_category': 'QR Code',
+      'event_label': window.location.href,
+      'event_callback': () => {
+        window.location.replace(targetUrl);
+      }
+    });
+
+    // Fallback redirect in case GA takes too long
+    setTimeout(() => { window.location.replace(targetUrl); }, 300);
+  </script>
 </head>
 <body>
   <p style="text-align:center; font-size:200%;">Redirecting... If you are not redirected, 
